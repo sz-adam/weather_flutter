@@ -19,6 +19,7 @@ class WeatherTextField extends StatelessWidget {
             border: OutlineInputBorder(),
             labelText: 'City',
           ),
+          textCapitalization: TextCapitalization.words,
           onSubmitted: onSubmitted,
         ),
       ),

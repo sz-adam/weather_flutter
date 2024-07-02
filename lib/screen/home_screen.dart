@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_weather/model/weather_data.dart';
 import 'package:flutter_weather/services/city_name.dart';
 import 'package:flutter_weather/widget/card.dart';
 import 'package:flutter_weather/widget/day.dart';
@@ -12,9 +13,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String city = '';  // Változó  tárolására
-  double? latitude;
-  double? longitude;
+  String city = '';
+  Map<String, dynamic>? cityInfo;
+  WeatherData? weatherData;
 
   void _openCitySearch() {
     showModalBottomSheet(
@@ -22,18 +23,23 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (ctx) => WeatherTextField(
         onSubmitted: (value) async {
+          //városnév frissítése
           setState(() {
             city = value;
           });
           Navigator.of(context).pop();
           try {
-            var result = await WeatherApiService.fetchCityInfo(city);
-            setState(() {
-              latitude = result['latitude'];
-              longitude = result['longitude'];
-            });
-            print(
-                'Latitude: $latitude, Longitude: $longitude'); // Adatok megjelenítése a konzolon
+            cityInfo = await WeatherApiService.fetchCityInfo(city);
+            if (cityInfo != null) {
+              weatherData = await WeatherApiService.fetchWeatherData(
+                cityInfo!['latitude'],
+                cityInfo!['longitude'],
+              );
+              //weatherData frissítése
+              setState(() {});
+            } else {
+              print('No city information found for $city');
+            }
           } catch (e) {
             print('Error retrieving city info: $e');
           }
@@ -55,10 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: Column(
-        
         children: [
-                    Text('${longitude}'),
-          Text('${latitude}'),
           Expanded(
             child: SingleChildScrollView(
               child: CustomCard(),
@@ -67,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
           SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
-              child: Day(),
+              child: Day(dailyData: weatherData?.daily),
             ),
           ),
         ],

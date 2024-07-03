@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/weather_data.dart';
 import 'package:flutter_weather/services/city_name.dart';
-import 'package:flutter_weather/widget/card.dart';
+import 'package:flutter_weather/widget/current_card.dart';
 import 'package:flutter_weather/widget/day.dart';
 import 'package:flutter_weather/widget/weather_text_field.dart';
 
@@ -64,10 +64,9 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           Expanded(
             child: SingleChildScrollView(
-              child: CustomCard(),
+              child: CustomCard(dateData: weatherData?.current,),
             ),
           ),
-          SizedBox(height: 20),
           Expanded(
             child: SingleChildScrollView(
               child: Day(dailyData: weatherData?.daily),

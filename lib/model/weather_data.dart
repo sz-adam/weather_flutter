@@ -3,20 +3,55 @@ class WeatherData {
   final HourlyData hourly;
   final Map<String, String> dailyUnits;
   final DailyData daily;
+  final CurrentData current;
 
   WeatherData({
     required this.hourlyUnits,
     required this.hourly,
     required this.dailyUnits,
     required this.daily,
+    required this.current,
   });
 
   factory WeatherData.fromJson(Map<String, dynamic> json) {
     return WeatherData(
+      current: CurrentData.fromJson(json['current']),
       hourlyUnits: Map<String, String>.from(json['hourly_units']),
       hourly: HourlyData.fromJson(json['hourly']),
       dailyUnits: Map<String, String>.from(json['daily_units']),
       daily: DailyData.fromJson(json['daily']),
+    );
+  }
+}
+
+class CurrentData {
+  final String time;
+  final int interval;
+  final double temperature2m;
+  final int isDay;
+  final double precipitation;
+  final double rain;
+  final double windSpeed10m;
+
+  CurrentData({
+    required this.time,
+    required this.interval,
+    required this.temperature2m,
+    required this.isDay,
+    required this.precipitation,
+    required this.rain,
+    required this.windSpeed10m,
+  });
+
+  factory CurrentData.fromJson(Map<String, dynamic> json) {
+    return CurrentData(
+      time: json['time'],
+      interval: json['interval'],
+      temperature2m: json['temperature_2m'],
+      isDay: json['is_day'],
+      precipitation: json['precipitation'],
+      rain: json['rain'],
+      windSpeed10m: json['wind_speed_10m'],
     );
   }
 }

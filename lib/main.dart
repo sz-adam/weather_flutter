@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_weather/screen/home_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_weather/screen/starting_screen.dart';
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.lightBlue[700],
       ),
-      home: const HomeScreen(),
+      home:StartingScreen(),
     );
   }
 }

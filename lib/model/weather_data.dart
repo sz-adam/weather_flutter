@@ -88,12 +88,14 @@ class DailyData {
   final List<double> temperature2mMax;
   final List<double> temperature2mMin;
   final List<double> windSpeed10mMax;
+  final List<double> rainSum;
 
   DailyData({
     required this.time,
     required this.temperature2mMax,
     required this.temperature2mMin,
     required this.windSpeed10mMax,
+    required this.rainSum,
   });
 
   factory DailyData.fromJson(Map<String, dynamic> json) {
@@ -102,6 +104,7 @@ class DailyData {
       temperature2mMax: List<double>.from(json['temperature_2m_max']),
       temperature2mMin: List<double>.from(json['temperature_2m_min']),
       windSpeed10mMax: List<double>.from(json['wind_speed_10m_max']),
+      rainSum: List<double>.from(json['rain_sum']),
     );
   }
 }

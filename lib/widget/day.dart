@@ -5,12 +5,10 @@ class Day extends StatelessWidget {
   const Day({Key? key, this.dailyData}) : super(key: key);
   final DailyData? dailyData;
 
+
   @override
   Widget build(BuildContext context) {
-    if (dailyData == null) {
-      return const Center(child: Text('No data available'));
-    }
-
+  
     return Column(
       children: [
         const Text(
@@ -68,6 +66,20 @@ class Day extends StatelessWidget {
                           ),
                           const SizedBox(
                             height: 8,
+                          ),
+                           
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.water,
+                                color: Colors.blue,
+                              ),
+                              Text(
+                                '  ${dailyData!.rainSum[idx]}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w600),
+                              )
+                            ],
                           ),
                           Row(
                             children: [

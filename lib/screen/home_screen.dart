@@ -31,11 +31,10 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (ctx) => WeatherTextField(
         onSubmitted: (value) async {
           setState(() {
-            widget.city =
-                value; 
+            widget.city = value;
           });
           Navigator.of(ctx).pop();
-          _fetchWeatherData(); 
+          _fetchWeatherData();
         },
       ),
     );
@@ -59,23 +58,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-String _getBackgroundImage() {
+  String _getBackgroundImage() {
     if (weatherData != null) {
-      if (weatherData!.current.isDay == 1) {
-        return 'assets/images/sun.jpg';
+      if (weatherData!.current.rain > 0) {
+        return 'assets/images/rain.jpg';
       } else {
-        return 'assets/images/rain.jpg'; 
+        return 'assets/images/sun.jpg';
       }
     }
     // Alapértelmezett kép, ha nincs adat
     return 'assets/images/home.jpg';
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
-     
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.city),
@@ -125,6 +121,3 @@ String _getBackgroundImage() {
     );
   }
 }
-
-
-

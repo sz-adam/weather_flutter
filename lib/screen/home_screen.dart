@@ -59,11 +59,26 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+String _getBackgroundImage() {
+    if (weatherData != null) {
+      if (weatherData!.current.isDay == 1) {
+        return 'assets/images/sun.jpg';
+      } else {
+        return 'assets/images/rain.jpg'; 
+      }
+    }
+    // Alapértelmezett kép, ha nincs adat
+    return 'assets/images/home.jpg';
+  }
+
+  
+
   @override
   Widget build(BuildContext context) {
+     
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.city.isEmpty ? 'City' : widget.city),
+        title: Text(widget.city),
         actions: [
           IconButton(
             onPressed: _openCitySearch,
@@ -71,20 +86,45 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              child: CustomCard(dateData: weatherData?.current),
-            ),
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage(_getBackgroundImage()),
+            fit: BoxFit.cover,
           ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Day(dailyData: weatherData?.daily),
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: weatherData != null
+                  ? SingleChildScrollView(
+                      child: CustomCard(dateData: weatherData!.current),
+                    )
+                  : _buildNoDataWidget(), // Ha nincs adat, megjelenítjük az üzenetet
             ),
-          ),
-        ],
+            Expanded(
+              child: SingleChildScrollView(
+                child: Day(dailyData: weatherData?.daily),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoDataWidget() {
+    return const Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'You entered a city that does not exist !!',
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
       ),
     );
   }
 }
+
+
+

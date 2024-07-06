@@ -3,6 +3,7 @@ import 'package:flutter_weather/model/weather_data.dart';
 import 'package:flutter_weather/services/city_name.dart';
 import 'package:flutter_weather/widget/current_card.dart';
 import 'package:flutter_weather/widget/day.dart';
+import 'package:flutter_weather/widget/hourly_day.dart';
 import 'package:flutter_weather/widget/weather_text_field.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -97,7 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           IconButton(
             onPressed: _openCitySearch,
-            icon: const Icon(Icons.search,color: Colors.white,),
+            icon: const Icon(
+              Icons.search,
+              color: Colors.white,
+            ),
           )
         ],
       ),
@@ -110,26 +114,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SafeArea(
-            child: isLoading
-                ? const Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : (weatherData == null
-                    ? _buildNoDataWidget()
-                    : Column(
-                        children: [
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: CustomCard(dateData: weatherData!.current),
-                            ),
-                          ),
-                          Expanded(
-                            child: SingleChildScrollView(
-                              child: Day(dailyData: weatherData?.daily),
-                            ),
-                          ),
-                        ],
-                      )),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : (weatherData == null
+                          ? _buildNoDataWidget()
+                          : Column(
+                              children: [
+                                CustomCard(dateData: weatherData!.current),
+                                const SizedBox(height: 10,),
+                                Day(dailyData: weatherData?.daily),
+                                const SizedBox(height: 10,),
+                                HourlyDay(hourlyData: weatherData?.hourly), 
+                              ],
+                            )),
+                ],
+              ),
+            ),
           ),
         ],
       ),

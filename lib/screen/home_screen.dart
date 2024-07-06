@@ -118,18 +118,26 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(),
+                      ? SizedBox(
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height,
+                          child: const Center(
+                            child: CircularProgressIndicator(),
+                          ),
                         )
                       : (weatherData == null
                           ? _buildNoDataWidget()
                           : Column(
                               children: [
                                 CustomCard(dateData: weatherData!.current),
-                                const SizedBox(height: 10,),
+                                const SizedBox(
+                                  height: 10,
+                                ),
                                 Day(dailyData: weatherData?.daily),
-                                const SizedBox(height: 10,),
-                                HourlyDay(hourlyData: weatherData?.hourly), 
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                HourlyDay(hourlyData: weatherData?.hourly),
                               ],
                             )),
                 ],
@@ -142,12 +150,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildNoDataWidget() {
-    return const Center(
-      child: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Text(
-          'You entered a city that does not exist !!',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      child: const Center(
+        child: Padding(
+          padding: EdgeInsets.all(16.0),
+          child: Text(
+            'You entered a city that does not exist !!',
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
     );

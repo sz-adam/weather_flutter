@@ -8,11 +8,7 @@ class CustomCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (dateData == null) {
-      return const Center(
-        child: Text('No data available'),
-      );
-    }
+   
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -47,7 +43,7 @@ class CustomCard extends StatelessWidget {
                 height: 20,
               ),
               Text(
-                'Precipitation: ${dateData!.precipitation.toStringAsFixed(1)} mm',
+                'Rain: ${dateData!.precipitation.toStringAsFixed(1)} mm',
                 style: const TextStyle(fontSize: 16),
               ),
               const SizedBox(

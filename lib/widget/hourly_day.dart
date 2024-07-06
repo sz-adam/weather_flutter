@@ -3,8 +3,9 @@ import 'package:flutter_weather/model/weather_data.dart';
 import 'package:intl/intl.dart';
 
 class HourlyDay extends StatelessWidget {
-  const HourlyDay({Key? key, this.hourlyData, this.dailyData}) : super(key: key);
-  
+  const HourlyDay({Key? key, this.hourlyData, this.dailyData})
+      : super(key: key);
+
   final DailyData? dailyData;
   final HourlyData? hourlyData;
 
@@ -34,17 +35,32 @@ class HourlyDay extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(            
-            children:
-             filteredTimes.map((time) {
+          child: Row(
+            children: filteredTimes.map((time) {
               int idx = hourlyData!.time.indexOf(time);
               DateTime date = DateTime.parse(time);
+
+              // napi indexet
+              int dayIndex = date
+                  .difference(DateTime.parse(hourlyData!.time.first))
+                  .inDays;
+
               String formattedDate = DateFormat('MM-dd').format(date);
               String formattedTime = DateFormat('HH:mm').format(date);
+
+              // napfelkelte és naplemente időpontok
+              DateTime sunrise = DateTime.parse(dailyData!.sunrise[dayIndex]);
+              DateTime sunset = DateTime.parse(dailyData!.sunset[dayIndex]);
+
+              IconData icon = (date.isAfter(sunrise) && date.isBefore(sunset))
+                  ? Icons.wb_sunny
+                  : Icons.nights_stay;
+
               return Container(
                 width: MediaQuery.of(context).size.width * 0.4,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14),
                   color: Theme.of(context).colorScheme.primaryFixedDim,
@@ -67,9 +83,11 @@ class HourlyDay extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Icon(
-                      Icons.wb_sunny,
-                      color: Colors.yellow,
+                    Icon(
+                      icon,
+                      color: (icon == Icons.wb_sunny)
+                          ? Colors.yellow
+                          : Colors.blue,
                       size: 30,
                     ),
                     const SizedBox(height: 10),

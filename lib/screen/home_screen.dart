@@ -137,7 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                HourlyDay(hourlyData: weatherData?.hourly),
+                                HourlyDay(hourlyData: weatherData?.hourly,dailyData: weatherData?.daily),
                               ],
                             )),
                 ],

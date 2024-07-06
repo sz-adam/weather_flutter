@@ -34,7 +34,7 @@ class HourlyDay extends StatelessWidget {
               // Formázott idő
               String formattedTime = DateFormat('HH:mm').format(date);
               return Container(
-                width: 150,
+               width: MediaQuery.of(context).size.width * 0.4,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 30),

@@ -92,11 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(widget.city),
         backgroundColor: Colors.transparent,
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
         elevation: 0,
         actions: [
           IconButton(
             onPressed: _openCitySearch,
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search,color: Colors.white,),
           )
         ],
       ),

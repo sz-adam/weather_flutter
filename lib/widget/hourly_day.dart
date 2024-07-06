@@ -3,12 +3,21 @@ import 'package:flutter_weather/model/weather_data.dart';
 import 'package:intl/intl.dart';
 
 class HourlyDay extends StatelessWidget {
-  const HourlyDay({Key? key, this.hourlyData}) : super(key: key);
-
+  const HourlyDay({Key? key, this.hourlyData, this.dailyData}) : super(key: key);
+  
+  final DailyData? dailyData;
   final HourlyData? hourlyData;
 
   @override
   Widget build(BuildContext context) {
+    // Aktuális idő
+    DateTime now = DateTime.now();
+    // Szűrjük az óránkénti adatokat az aktuális időtől kezdve
+    List<String> filteredTimes = hourlyData!.time.where((time) {
+      DateTime date = DateTime.parse(time);
+      return date.isAfter(now);
+    }).toList();
+
     return Column(
       children: [
         const Text(
@@ -25,22 +34,21 @@ class HourlyDay extends StatelessWidget {
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: Row(
-            children: hourlyData!.time.map((time) {
+          child: Row(            
+            children:
+             filteredTimes.map((time) {
               int idx = hourlyData!.time.indexOf(time);
               DateTime date = DateTime.parse(time);
-              // Formázott dátum
               String formattedDate = DateFormat('MM-dd').format(date);
-              // Formázott idő
               String formattedTime = DateFormat('HH:mm').format(date);
               return Container(
-               width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.4,
                 margin: const EdgeInsets.symmetric(horizontal: 5),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14),
-                    color: Theme.of(context).colorScheme.primaryFixedDim),
+                  borderRadius: BorderRadius.circular(14),
+                  color: Theme.of(context).colorScheme.primaryFixedDim,
+                ),
                 child: Column(
                   children: [
                     Text(
@@ -85,7 +93,7 @@ class HourlyDay extends StatelessWidget {
                               Icons.water,
                               color: Colors.blue,
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               '${hourlyData!.rain[idx]} mm',
                               style: const TextStyle(
@@ -101,7 +109,7 @@ class HourlyDay extends StatelessWidget {
                               Icons.air,
                               color: Colors.blue,
                             ),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               '${hourlyData!.windSpeed10m[idx]} km/h',
                               style: const TextStyle(

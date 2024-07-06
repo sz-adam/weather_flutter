@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? cityInfo;
   WeatherData? weatherData;
+  bool isLoading = false; 
 
   @override
   void initState() {
@@ -32,29 +33,41 @@ class _HomeScreenState extends State<HomeScreen> {
         onSubmitted: (value) async {
           setState(() {
             widget.city = value;
+            isLoading = true; // Adatok lekérése előtt isLoading true
           });
           Navigator.of(ctx).pop();
-          _fetchWeatherData();
+          await _fetchWeatherData();
         },
       ),
     );
   }
 
-  void _fetchWeatherData() async {
+  Future<void> _fetchWeatherData() async {
     try {
+      setState(() {
+        isLoading = true; // Adatok lekérése előtt isLoading true
+      });
+
       cityInfo = await WeatherApiService.fetchCityInfo(widget.city);
       if (cityInfo != null) {
         weatherData = await WeatherApiService.fetchWeatherData(
           cityInfo!['latitude'],
           cityInfo!['longitude'],
         );
-        //weatherData frissítése
-        setState(() {});
+        setState(() {
+          isLoading = false; // Adatok lekérése után isLoading false
+        });
       } else {
         print('No city information found for ${widget.city}');
+        setState(() {
+          isLoading = false; // Hiba esetén is isLoading false
+        });
       }
     } catch (e) {
       print('Error retrieving city info: $e');
+      setState(() {
+        isLoading = false; // Hiba esetén is isLoading false
+      });
     }
   }
 
@@ -73,8 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //body magassága az appbar magasságát is magában foglalja
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         title: Text(widget.city),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         actions: [
           IconButton(
             onPressed: _openCitySearch,
@@ -82,29 +99,37 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(_getBackgroundImage()),
-            fit: BoxFit.cover,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              _getBackgroundImage(),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: Column(
-          children: [
-            Expanded(
-              child: weatherData != null
-                  ? SingleChildScrollView(
-                      child: CustomCard(dateData: weatherData!.current),
-                    )
-                  : _buildNoDataWidget(), // Ha nincs adat, megjelenítjük az üzenetet
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Day(dailyData: weatherData?.daily),
-              ),
-            ),
-          ],
-        ),
+          SafeArea(
+            child: isLoading
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : (weatherData == null
+                    ? _buildNoDataWidget()
+                    : Column(
+                        children: [
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: CustomCard(dateData: weatherData!.current),
+                            ),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Day(dailyData: weatherData?.daily),
+                            ),
+                          ),
+                        ],
+                      )),
+          ),
+        ],
       ),
     );
   }

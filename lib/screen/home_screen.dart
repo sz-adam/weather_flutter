@@ -17,7 +17,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic>? cityInfo;
   WeatherData? weatherData;
-  bool isLoading = false; 
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -31,8 +31,11 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (ctx) => WeatherTextField(
         onSubmitted: (value) async {
+          // Az új városnév beállítása
+          widget.city = value;
+          // Új keresés előtt a weatherData újból null
+          weatherData = null;
           setState(() {
-            widget.city = value;
             isLoading = true; // Adatok lekérése előtt isLoading true
           });
           Navigator.of(ctx).pop();
@@ -54,17 +57,15 @@ class _HomeScreenState extends State<HomeScreen> {
           cityInfo!['latitude'],
           cityInfo!['longitude'],
         );
-        setState(() {
-          isLoading = false; // Adatok lekérése után isLoading false
-        });
       } else {
         print('No city information found for ${widget.city}');
-        setState(() {
-          isLoading = false; // Hiba esetén is isLoading false
-        });
+        // Ha nincs városinformáció, akkor weatherData null
+        weatherData = null;
       }
     } catch (e) {
       print('Error retrieving city info: $e');
+      weatherData = null;
+    } finally {
       setState(() {
         isLoading = false; // Hiba esetén is isLoading false
       });
@@ -137,7 +138,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildNoDataWidget() {
     return const Center(
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Text(
           'You entered a city that does not exist !!',
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

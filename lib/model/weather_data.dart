@@ -89,6 +89,8 @@ class DailyData {
   final List<double> temperature2mMin;
   final List<double> windSpeed10mMax;
   final List<double> rainSum;
+  final List<String> sunrise;
+  final List<String> sunset;
 
   DailyData({
     required this.time,
@@ -96,6 +98,8 @@ class DailyData {
     required this.temperature2mMin,
     required this.windSpeed10mMax,
     required this.rainSum,
+    required this.sunrise,
+    required this.sunset,
   });
 
   factory DailyData.fromJson(Map<String, dynamic> json) {
@@ -105,6 +109,8 @@ class DailyData {
       temperature2mMin: List<double>.from(json['temperature_2m_min']),
       windSpeed10mMax: List<double>.from(json['wind_speed_10m_max']),
       rainSum: List<double>.from(json['rain_sum']),
+      sunrise:List<String>.from(json['sunrise']),
+      sunset:List<String>.from(json['sunset']),
     );
   }
 }

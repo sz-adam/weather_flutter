@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/weather_data.dart';
+import 'package:flutter_weather/widget/sun_moon.dart';
 
 class Day extends StatelessWidget {
-  const Day({Key? key, this.dailyData}) : super(key: key);
+  const Day({Key? key, this.dailyData, this.dateData}) : super(key: key);
   final DailyData? dailyData;
+  final CurrentData? dateData;
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class Day extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 24,
+            color: Colors.white,
           ),
         ),
         const SizedBox(
@@ -44,11 +47,7 @@ class Day extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
-                      const Icon(
-                        Icons.sunny,
-                        color: Colors.yellow,
-                        size: 30,
-                      ),
+                     SunMoon(dailyData: dailyData,dateData: dateData ,size:35),
                       const SizedBox(height: 10),
                       Column(
                         children: [
@@ -91,7 +90,7 @@ class Day extends StatelessWidget {
                                 '  ${dailyData!.windSpeed10mMax[idx]} km/h',
                                 style: const TextStyle(
                                     fontWeight: FontWeight.w600),
-                              )
+                              ),
                             ],
                           )
                         ],

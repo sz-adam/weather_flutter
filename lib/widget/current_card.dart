@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_weather/model/weather_data.dart';
+import 'package:flutter_weather/widget/sun_moon.dart';
 
 class CustomCard extends StatelessWidget {
   const CustomCard({Key? key, this.dateData}) : super(key: key);
@@ -14,7 +15,7 @@ class CustomCard extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          margin: EdgeInsets.symmetric(vertical: 10),
+          margin:const EdgeInsets.symmetric(vertical: 10),
           width: MediaQuery.of(context).size.width * 0.7,
           height: MediaQuery.of(context).size.height * 0.3,
           decoration: BoxDecoration(
@@ -28,11 +29,7 @@ class CustomCard extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Icon(
-                    dateData!.isDay == 1 ? Icons.wb_sunny : Icons.nights_stay,
-                    size: 60,
-                    color: dateData!.isDay == 1 ? Colors.yellow : Colors.blue,
-                  ),
+                 SunMoon( dateData: dateData, size: 60),
                   Text(
                     '${dateData!.temperature2m.toStringAsFixed(1)}°',
                     style: const TextStyle(fontSize: 50),

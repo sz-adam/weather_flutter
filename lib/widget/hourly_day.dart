@@ -89,17 +89,21 @@ class HourlyDay extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    Icon(
-                      icon,
-                      color: (icon == Icons.wb_sunny)
-                          ? Colors.yellow
-                          : Colors.blue,
-                      size: 30,
-                    ),
+                    if (hourlyData!.rain[idx] >0 )
+                      const Icon(Icons.cloudy_snowing,color: Colors.blue,)
+                    else
+                      Icon(
+                        icon,
+                        color: (icon == Icons.wb_sunny)
+                            ? Colors.yellow
+                            : Colors.blue,
+                        size: 30,
+                      ),
                     const SizedBox(height: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                       
                         Text(
                           '${hourlyData!.temperature2m[idx]}°C',
                           style: const TextStyle(fontWeight: FontWeight.w600),

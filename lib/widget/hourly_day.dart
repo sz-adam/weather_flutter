@@ -13,6 +13,10 @@ class HourlyDay extends StatelessWidget {
   Widget build(BuildContext context) {
     // Aktuális idő
     DateTime now = DateTime.now();
+
+    //Az időzóna eltolása, ami a helyi idő és az UTC közötti különbség.
+    Duration timeZoneOffset = now.timeZoneOffset;
+
     // Szűrjük az óránkénti adatokat az aktuális időtől kezdve
     List<String> filteredTimes = hourlyData!.time.where((time) {
       DateTime date = DateTime.parse(time);
@@ -49,8 +53,10 @@ class HourlyDay extends StatelessWidget {
               String formattedTime = DateFormat('HH:mm').format(date);
 
               // napfelkelte és naplemente időpontok
-              DateTime sunrise = DateTime.parse(dailyData!.sunrise[dayIndex]);
-              DateTime sunset = DateTime.parse(dailyData!.sunset[dayIndex]);
+              DateTime sunrise = DateTime.parse(dailyData!.sunrise[dayIndex])
+                  .add(timeZoneOffset);
+              DateTime sunset = DateTime.parse(dailyData!.sunset[dayIndex])
+                  .add(timeZoneOffset);
 
               IconData icon = (date.isAfter(sunrise) && date.isBefore(sunset))
                   ? Icons.wb_sunny

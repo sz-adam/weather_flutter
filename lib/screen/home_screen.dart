@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text(widget.city),
         backgroundColor: Colors.transparent,
-        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+        titleTextStyle:const TextStyle(color: Colors.white, fontSize: 20),
         elevation: 0,
         actions: [
           IconButton(
@@ -133,11 +133,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Day(dailyData: weatherData?.daily),
+                                Day(dailyData: weatherData?.daily,dateData: weatherData!.current),
                                 const SizedBox(
                                   height: 10,
                                 ),
                                 HourlyDay(hourlyData: weatherData?.hourly,dailyData: weatherData?.daily),
+                              const SizedBox(
+                                  height: 10,
+                                ),
                               ],
                             )),
                 ],

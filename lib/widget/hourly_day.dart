@@ -49,7 +49,7 @@ class HourlyDay extends StatelessWidget {
                   .difference(DateTime.parse(hourlyData!.time.first))
                   .inDays;
 
-              String formattedDate = DateFormat('MM-dd').format(date);
+              String formattedDate = DateFormat('MM.dd').format(date);
               String formattedTime = DateFormat('HH:mm').format(date);
 
               // napfelkelte és naplemente időpontok
@@ -76,7 +76,7 @@ class HourlyDay extends StatelessWidget {
                     Text(
                       formattedDate,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -84,7 +84,7 @@ class HourlyDay extends StatelessWidget {
                     Text(
                       formattedTime,
                       style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 14,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -101,12 +101,7 @@ class HourlyDay extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          'Min: ${hourlyData!.temperature2m[idx]}°C',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'Max: ${hourlyData!.temperature2m[idx]}°C',
+                          '${hourlyData!.temperature2m[idx]}°C',
                           style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(height: 8),
